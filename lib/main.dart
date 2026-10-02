@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'screens/splash_screen.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart';
+import 'screens/home/rider_home_screen.dart';
+import 'screens/earnings/earnings_screen.dart';
+import 'screens/history/delivery_history_screen.dart';
+import 'screens/profile/rider_profile_screen.dart';
 
 void main() {
   runApp(const MovaRiderApp());
@@ -15,12 +23,18 @@ class MovaRiderApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFF3F4F6),
+        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
         colorScheme: const ColorScheme.light(
           primary: Color(0xFF0F172A),
           secondary: Color(0xFFD4AF37),
         ),
-        fontFamily: 'Inter',
+        textTheme: GoogleFonts.interTextTheme(),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Color(0xFF0F172A)),
+          titleTextStyle: TextStyle(color: Color(0xFF0F172A), fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -29,176 +43,25 @@ class MovaRiderApp extends StatelessWidget {
           primary: Color(0xFFFFFFFF),
           secondary: Color(0xFFD4AF37),
         ),
-        fontFamily: 'Inter',
+        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
       themeMode: ThemeMode.system,
-      home: const RiderHomeMock(),
-    );
-  }
-}
-
-class RiderHomeMock extends StatefulWidget {
-  const RiderHomeMock({super.key});
-
-  @override
-  State<RiderHomeMock> createState() => _RiderHomeMockState();
-}
-
-class _RiderHomeMockState extends State<RiderHomeMock> {
-  bool isOnline = true;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: SvgPicture.asset(
-          isDark ? 'assets/logo-dark.svg' : 'assets/logo-light.svg',
-          height: 28,
-        ),
-        centerTitle: true,
-        actions: [
-          Switch(
-            value: isOnline,
-            activeColor: Theme.of(context).colorScheme.secondary,
-            onChanged: (val) {
-              setState(() {
-                isOnline = val;
-              });
-            },
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Status Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              color: isOnline ? Colors.green.withOpacity(0.1) : Colors.red.withOpacity(0.1),
-              child: Center(
-                child: Text(
-                  isOnline ? 'You are ONLINE and receiving requests' : 'You are OFFLINE',
-                  style: TextStyle(
-                    color: isOnline ? Colors.green[700] : Colors.red[700],
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Today\'s Earnings',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '₦ 12,450',
-                      style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 32),
-                    
-                    if (isOnline) ...[
-                      const Text(
-                        'New Delivery Request',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 16),
-                      
-                      // Mock Request Card
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
-                              blurRadius: 20,
-                              spreadRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text('Pickup in 2.5 km', style: TextStyle(fontWeight: FontWeight.bold)),
-                                Text('₦ 1,200', style: TextStyle(
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                )),
-                              ],
-                            ),
-                            const Divider(height: 32),
-                            Row(
-                              children: [
-                                const Icon(Icons.inventory_2_outlined, color: Colors.grey),
-                                const SizedBox(width: 12),
-                                const Expanded(child: Text('Electronics (Small Package)')),
-                              ],
-                            ),
-                            const SizedBox(height: 24),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: OutlinedButton(
-                                    onPressed: () {},
-                                    style: OutlinedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                    ),
-                                    child: const Text('Decline'),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                                      foregroundColor: Colors.black,
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                    ),
-                                    child: const Text('Accept', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ] else ...[
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(40.0),
-                          child: Icon(Icons.power_settings_new, size: 80, color: Colors.grey.withOpacity(0.3)),
-                        ),
-                      ),
-                    ]
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (_) => const RiderSplashScreen(),
+        '/login': (_) => const RiderLoginScreen(),
+        '/register': (_) => const RiderRegisterScreen(),
+        '/home': (_) => const RiderHomeScreen(),
+        '/earnings': (_) => const EarningsScreen(),
+        '/history': (_) => const DeliveryHistoryScreen(),
+        '/profile': (_) => const RiderProfileScreen(),
+      },
     );
   }
 }
