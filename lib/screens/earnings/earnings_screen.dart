@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../data/mock_data.dart';
 
 class EarningsScreen extends StatelessWidget {
   const EarningsScreen({super.key});

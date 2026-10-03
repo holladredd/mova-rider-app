@@ -6,7 +6,7 @@ class IncomingRequestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _incomingRequest = MockData.allDeliveries.firstWhere((d) => d['status'] == 'SEARCHING_RIDER');
+    final incomingRequest = MockData.allDeliveries.firstWhere((d) => d['status'] == 'SEARCHING_RIDER');
     final gold = const Color(0xFFD4AF37);
     final charcoal = const Color(0xFF0F172A);
     final isDark = Theme.of(context).brightness == Brightness.dark;
