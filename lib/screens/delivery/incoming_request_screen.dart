@@ -53,8 +53,24 @@ class IncomingRequestScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('₦${_incomingRequest['estimatedPrice']}', style: TextStyle(fontSize: 40, fontWeight: FontWeight.black, color: isDark ? Colors.white : charcoal)),
-                    const Text('Estimated Earnings', style: TextStyle(color: Colors.grey)),
+                    const Text('Submit Your Offer', style: TextStyle(fontSize: 22, fontWeight: FontWeight.black)),
+                    const SizedBox(height: 8),
+                    const Text('Enter the amount you want to charge for this trip. The user will review your offer.', style: TextStyle(color: Colors.grey, fontSize: 13), textAlign: TextAlign.center),
+                    const SizedBox(height: 24),
+                    
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.payments, color: Colors.green),
+                        prefixText: '₦ ',
+                        hintText: 'e.g. 2500',
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: charcoal, width: 2)),
+                      ),
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    
                     const Divider(height: 40),
                     
                     _routeRow(Icons.my_location, _incomingRequest['pickupAddress'], 'Pickup (2km away)', Colors.grey),
@@ -88,7 +104,7 @@ class IncomingRequestScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 18),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                             ),
-                            child: const Text('Accept', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                            child: const Text('Submit Offer', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                           ),
                         ),
                       ],

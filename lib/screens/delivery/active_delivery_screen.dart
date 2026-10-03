@@ -125,6 +125,27 @@ class _ActiveDeliveryScreenState extends State<ActiveDeliveryScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                
+                // Package Contents (Now Visible)
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.green.withValues(alpha: 0.1),
+                      child: const Icon(Icons.verified_user_outlined, color: Colors.green),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Declared Contents', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                          Text(_delivery['package']['description'] ?? 'Not specified', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 32),
 
                 // Action Button
