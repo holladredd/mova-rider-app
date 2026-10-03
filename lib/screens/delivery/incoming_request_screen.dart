@@ -53,7 +53,7 @@ class IncomingRequestScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('Submit Your Offer', style: TextStyle(fontSize: 22, fontWeight: FontWeight.black)),
+                    const Text('Submit Your Offer', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
                     const SizedBox(height: 8),
                     const Text('Enter the amount you want to charge for this trip. The user will review your offer.', style: TextStyle(color: Colors.grey, fontSize: 13), textAlign: TextAlign.center),
                     const SizedBox(height: 24),
