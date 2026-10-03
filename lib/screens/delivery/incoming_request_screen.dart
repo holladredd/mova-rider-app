@@ -96,7 +96,16 @@ class IncomingRequestScreen extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushReplacementNamed(context, '/active-delivery');
+                              Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+                              Future.delayed(const Duration(milliseconds: 300), () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('✅ Your offer was submitted! Waiting for user to accept.'),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 4),
+                                  ),
+                                );
+                              });
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: charcoal,

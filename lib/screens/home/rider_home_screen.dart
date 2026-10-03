@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../data/mock_data.dart';
+import '../history/delivery_history_screen.dart';
+import '../earnings/earnings_screen.dart';
+import '../profile/rider_profile_screen.dart';
 
 class RiderHomeScreen extends StatefulWidget {
   const RiderHomeScreen({super.key});
@@ -12,6 +15,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   int _currentIndex = 0;
   bool isOnline = true;
   bool hasRequest = true;
+  bool offerAccepted = false; // Simulates when a user accepts the rider's bid
   
   final _rider = MockData.mockRiders[0];
   final _activeDelivery = MockData.allDeliveries.firstWhere((d) => d['status'] == 'IN_TRANSIT');
@@ -25,9 +29,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
         index: _currentIndex,
         children: [
           _dashboardTab(isDark),
-          const _HistoryTabPlaceholder(),
-          const _EarningsTabPlaceholder(),
-          const _ProfileTabPlaceholder(),
+          const DeliveryHistoryScreen(),
+          const EarningsScreen(),
+          const RiderProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -115,7 +119,38 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                   ]),
                   const SizedBox(height: 20),
 
-                  if (isOnline && hasRequest) ...[
+                  if (isOnline && offerAccepted) ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.green.withValues(alpha: 0.4)),
+                      ),
+                      child: Row(children: [
+                        const Icon(Icons.check_circle, color: Colors.green, size: 28),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Text('Offer Accepted! 🎉', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.green)),
+                            Text('The user has accepted your bid. Head to pickup now.', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                          ]),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.pushNamed(context, '/active-delivery'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green, foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          ),
+                          child: const Text('Go', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ]),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+
+                  if (isOnline && hasRequest && !offerAccepted) ...[
                     const Text('Incoming Request', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 12),
                     _requestCard(charcoal, gold, cardBg),
@@ -154,13 +189,13 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                           Text('${_activeDelivery['package']['size']} Package', style: const TextStyle(color: Colors.grey, fontSize: 13)),
                         ]),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushNamed(context, '/active-delivery'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF22C55E), foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          child: const Text('Mark Delivered', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                          child: const Text('Continue Delivery', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                         ),
                       ]),
                     ]),
@@ -257,19 +292,4 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       Expanded(child: Text(text, style: const TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis)),
     ]);
   }
-}
-
-class _HistoryTabPlaceholder extends StatelessWidget {
-  const _HistoryTabPlaceholder();
-  @override Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Delivery History')));
-}
-
-class _EarningsTabPlaceholder extends StatelessWidget {
-  const _EarningsTabPlaceholder();
-  @override Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Earnings')));
-}
-
-class _ProfileTabPlaceholder extends StatelessWidget {
-  const _ProfileTabPlaceholder();
-  @override Widget build(BuildContext context) => const Scaffold(body: Center(child: Text('Profile')));
 }
