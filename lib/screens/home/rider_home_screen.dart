@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../data/mock_data.dart';
 
 class RiderHomeScreen extends StatefulWidget {
   const RiderHomeScreen({super.key});
@@ -11,6 +12,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   int _currentIndex = 0;
   bool isOnline = true;
   bool hasRequest = true;
+  
+  final _rider = mockRider;
+  final _activeDelivery = mockDeliveries.firstWhere((d) => d['status'] == 'IN_TRANSIT');
+  final _incomingRequest = mockDeliveries.firstWhere((d) => d['status'] == 'SEARCHING_RIDER');
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +109,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                 children: [
                   // Today stats
                   Row(children: [
-                    _statCard('₦12,450', 'Today\'s Earnings', Icons.trending_up, const Color(0xFF22C55E), cardBg),
+                    _statCard('₦${_rider['balance']}', 'Today\'s Earnings', Icons.trending_up, const Color(0xFF22C55E), cardBg),
                     const SizedBox(width: 12),
                     _statCard('7', 'Deliveries', Icons.local_shipping_outlined, gold, cardBg),
                   ]),
@@ -139,14 +144,14 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                         ])),
                       ),
                       const SizedBox(height: 16),
-                      _routeRow(Icons.my_location, '123 Victoria Island, Lagos', Colors.grey),
+                      _routeRow(Icons.my_location, _activeDelivery['pickupAddress'], Colors.grey),
                       const SizedBox(height: 8),
-                      _routeRow(Icons.location_on, 'Lekki Phase 1, Lagos', Colors.red),
+                      _routeRow(Icons.location_on, _activeDelivery['dropoffAddress'], Colors.red),
                       const Divider(height: 24),
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                        const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text('MOVA-8392', style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('Small Package', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(_activeDelivery['trackingId'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text('${_activeDelivery['package']['size']} Package', style: const TextStyle(color: Colors.grey, fontSize: 13)),
                         ]),
                         ElevatedButton(
                           onPressed: () {},
@@ -202,17 +207,17 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             Text('Pickup in 2.5 km', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Text('New request • 30s remaining', style: TextStyle(color: Colors.grey, fontSize: 12)),
           ]),
-          Text('₦1,200', style: TextStyle(color: gold, fontWeight: FontWeight.bold, fontSize: 22)),
+          Text('₦${_incomingRequest['estimatedPrice']}', style: TextStyle(color: gold, fontWeight: FontWeight.bold, fontSize: 22)),
         ]),
         const Divider(height: 24),
-        _routeRow(Icons.my_location, '123 Victoria Island, Lagos', Colors.grey),
+        _routeRow(Icons.my_location, _incomingRequest['pickupAddress'], Colors.grey),
         const SizedBox(height: 8),
-        _routeRow(Icons.location_on, 'Lekki Phase 1, Lagos', Colors.red),
+        _routeRow(Icons.location_on, _incomingRequest['dropoffAddress'], Colors.red),
         const SizedBox(height: 4),
         Row(children: [
           const Icon(Icons.inventory_2_outlined, color: Colors.grey, size: 16),
           const SizedBox(width: 6),
-          const Text('Small package  ·  3.2 km distance', style: TextStyle(color: Colors.grey, fontSize: 12)),
+          Text('${_incomingRequest['package']['size']} package  ·  ${_incomingRequest['distanceKm']} km distance', style: const TextStyle(color: Colors.grey, fontSize: 12)),
         ]),
         const SizedBox(height: 20),
         Row(children: [
@@ -226,7 +231,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           )),
           const SizedBox(width: 12),
           Expanded(child: ElevatedButton(
-            onPressed: () => setState(() => hasRequest = false),
+            onPressed: () {
+              Navigator.pushNamed(context, '/incoming-request');
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: gold, foregroundColor: Colors.black,
               padding: const EdgeInsets.symmetric(vertical: 16),
