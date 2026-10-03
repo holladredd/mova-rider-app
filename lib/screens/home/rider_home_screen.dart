@@ -13,9 +13,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   bool isOnline = true;
   bool hasRequest = true;
   
-  final _rider = mockRider;
-  final _activeDelivery = mockDeliveries.firstWhere((d) => d['status'] == 'IN_TRANSIT');
-  final _incomingRequest = mockDeliveries.firstWhere((d) => d['status'] == 'SEARCHING_RIDER');
+  final _rider = MockData.mockRiders[0];
+  final _activeDelivery = MockData.allDeliveries.firstWhere((d) => d['status'] == 'IN_TRANSIT');
+  final _incomingRequest = MockData.allDeliveries.firstWhere((d) => d['status'] == 'SEARCHING_RIDER');
 
   @override
   Widget build(BuildContext context) {
