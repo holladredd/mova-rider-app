@@ -20,7 +20,7 @@ class _RiderSplashScreenState extends State<RiderSplashScreen> with SingleTicker
     _scale = Tween<double>(begin: 0.7, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutBack));
     _ctrl.forward();
     Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) Navigator.pushReplacementNamed(context, '/login');
+      if (mounted) Navigator.pushReplacementNamed(context, '/auth-lock');
     });
   }
 

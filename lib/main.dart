@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
+import 'screens/auth/security_lock_screen.dart';
 import 'screens/home/rider_home_screen.dart';
 import 'screens/earnings/earnings_screen.dart';
 import 'screens/history/delivery_history_screen.dart';
@@ -57,6 +58,7 @@ class MovaRiderApp extends StatelessWidget {
       initialRoute: '/splash',
       routes: {
         '/splash': (_) => const RiderSplashScreen(),
+        '/auth-lock': (_) => const SecurityLockScreen(),
         '/login': (_) => const RiderLoginScreen(),
         '/register': (_) => const RiderRegisterScreen(),
         '/home': (_) => const RiderHomeScreen(),
