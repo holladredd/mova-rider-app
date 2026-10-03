@@ -10,6 +10,7 @@ import 'screens/history/delivery_history_screen.dart';
 import 'screens/profile/rider_profile_screen.dart';
 import 'screens/delivery/incoming_request_screen.dart';
 import 'screens/delivery/active_delivery_screen.dart';
+import 'screens/delivery/delivery_review_screen.dart';
 
 void main() {
   runApp(const MovaRiderApp());
@@ -65,6 +66,7 @@ class MovaRiderApp extends StatelessWidget {
         '/profile': (_) => const RiderProfileScreen(),
         '/incoming-request': (_) => const IncomingRequestScreen(),
         '/active-delivery': (_) => const ActiveDeliveryScreen(),
+        '/review': (_) => const DeliveryReviewScreen(),
       },
     );
   }
